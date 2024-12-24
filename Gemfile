@@ -61,3 +61,5 @@ gem "vite_rails", "~> 3.0"
 gem "devise", "~> 4.9"
 
 gem "dotenv-rails", "~> 3.1"
+
+gem "cloudinary", "~> 2.2"

@@ -59,3 +59,5 @@ gem "inertia_rails", "~> 3.6"
 gem "vite_rails", "~> 3.0"
 
 gem "devise", "~> 4.9"
+
+gem "dotenv-rails", "~> 3.1"

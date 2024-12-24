@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  purpose: MyText
+  start_date: 2024-12-24
+  end_date: 2024-12-24
+  language: one
+  context: MyText
+  user: one
+
+two:
+  title: MyString
+  purpose: MyText
+  start_date: 2024-12-24
+  end_date: 2024-12-24
+  language: two
+  context: MyText
+  user: two

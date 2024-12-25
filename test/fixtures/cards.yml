@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  instruction: MyText
+  text_content: MyText
+  user_answer: MyText
+  model_answer: MyText
+  lesson: one
+  blueprint: one
+  correct: false
+  bookmarked: false
+
+two:
+  instruction: MyText
+  text_content: MyText
+  user_answer: MyText
+  model_answer: MyText
+  lesson: two
+  blueprint: two
+  correct: false
+  bookmarked: false

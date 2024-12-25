@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_24_125204) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_24_152153) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -42,6 +42,75 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_24_125204) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "blueprints", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "cards", force: :cascade do |t|
+    t.text "instruction", null: false
+    t.text "text_content"
+    t.text "user_answer"
+    t.text "model_answer", null: false
+    t.bigint "lesson_id", null: false
+    t.bigint "blueprint_id", null: false
+    t.boolean "correct"
+    t.boolean "bookmarked", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["blueprint_id"], name: "index_cards_on_blueprint_id"
+    t.index ["lesson_id"], name: "index_cards_on_lesson_id"
+  end
+
+  create_table "curricula", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "purpose", null: false
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.bigint "language_id", null: false
+    t.text "context"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["language_id"], name: "index_curricula_on_language_id"
+    t.index ["user_id"], name: "index_curricula_on_user_id"
+  end
+
+  create_table "languages", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "lessons", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description", null: false
+    t.integer "order", null: false
+    t.bigint "curriculum_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["curriculum_id"], name: "index_lessons_on_curriculum_id"
+  end
+
+  create_table "mcq_options", force: :cascade do |t|
+    t.text "text_content"
+    t.bigint "card_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_mcq_options_on_card_id"
+  end
+
+  create_table "selected_card_blueprints", force: :cascade do |t|
+    t.bigint "curriculum_id", null: false
+    t.bigint "blueprint_id", null: false
+    t.integer "count", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["blueprint_id"], name: "index_selected_card_blueprints_on_blueprint_id"
+    t.index ["curriculum_id"], name: "index_selected_card_blueprints_on_curriculum_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -50,10 +119,19 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_24_125204) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "username", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "cards", "blueprints"
+  add_foreign_key "cards", "lessons"
+  add_foreign_key "curricula", "languages"
+  add_foreign_key "curricula", "users"
+  add_foreign_key "lessons", "curricula"
+  add_foreign_key "mcq_options", "cards"
+  add_foreign_key "selected_card_blueprints", "blueprints"
+  add_foreign_key "selected_card_blueprints", "curricula"
 end

@@ -1,0 +1,36 @@
+[
+  {
+    "instruction": "Type what you hear below:",
+    "blueprint": "Answer",
+    "context": {
+      "type": "audio/mpeg",
+      "source": "audio url"
+    },
+    "model_answer": "今天天气真好"
+  },
+  {
+    "instruction": "Which option is the correct translation?",
+    "blueprint": "Multiple Choice",
+    "context": {
+      "type": "图书馆"
+    },
+    "options": ["shopping mall", "hospital", "post office", "library"],
+    "model_answer": "library"
+  },
+  {
+    "instruction": "Describe the image below:",
+    "blueprint": "Answer",
+    "context": {
+      "type": "image/png",
+      "source": "image url"
+    },
+    "model_answer": "这是一个海滩"
+  },
+
+  {
+    "instruction": "Translate the sentence below:",
+    "blueprint": "Answer",
+    "context": "她正在学习。",
+    "model_answer": "She is studying"
+  }
+]

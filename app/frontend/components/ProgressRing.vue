@@ -5,8 +5,8 @@ import type { Ref } from 'vue';
 
 interface Props {
     value: number
-    size: string
-    options: object
+    size?: string
+    options?: object
 }
 
 const { value = 0, size = '100%', options = {} } = defineProps<Props>()

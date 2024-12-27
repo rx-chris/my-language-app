@@ -5,8 +5,8 @@ class Card < ApplicationRecord
   has_many :mcq_options, dependent: :destroy
 
   # cloudinary attachments
-  has_one_attached :picture_context
-  has_one_attached :audio_context
+  has_one_attached :picture_content
+  has_one_attached :audio_content
 
   # validations
   validates :instruction, :model_answer, presence: true

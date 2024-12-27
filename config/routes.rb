@@ -15,4 +15,5 @@ Rails.application.routes.draw do
 
   resources :curricula, only: %i[index show]
   resources :lessons, only: %i[show]
+  resources :cards, only: %i[show]
 end

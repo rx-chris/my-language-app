@@ -1,4 +1,8 @@
 class Card < ApplicationRecord
+  # constants
+  LEARNING = :learning
+  TEST = :test
+
   # associations
   belongs_to :blueprint
   belongs_to :lesson

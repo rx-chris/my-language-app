@@ -4,6 +4,7 @@ import Container from '@/layouts/Container.vue';
 import { Link } from '@inertiajs/vue3';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button'
+import AppBreadCrumb from '@/components/AppBreadCrumb.vue';
 
 defineOptions({ layout: [Layout, Container] })
 
@@ -12,9 +13,13 @@ interface Props {
 }
 
 const { curriculum } = defineProps<Props>()
+
+const breadCrumbProps = [{ title: curriculum.title }]
 </script>
 <template>
     <div>
+        <!-- Breadcrumb -->
+        <AppBreadCrumb :bread-crumb-props="breadCrumbProps" />
         <!-- Curriculum summary -->
         <div class="relative w-full border bg-orange-100 p-8 rounded-md shadow-md">
             <h1 class="text-3xl font-semibold">{{ curriculum.title }}</h1>

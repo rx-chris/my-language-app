@@ -1,10 +1,12 @@
 <template>
-    <SidebarProvider :defaultOpen="true">
-        <AppSidebar />
-        <main style="width: calc(100vw - var(--sidebar-width-icon) - 2.5rem);">
-            <slot></slot>
-        </main>
-    </SidebarProvider>
+    <div>
+        <SidebarProvider :defaultOpen="true">
+            <AppSidebar />
+            <main style="width: calc(100vw - var(--sidebar-width-icon) - 2.5rem);">
+                <slot></slot>
+            </main>
+        </SidebarProvider>
+    </div>
 </template>
 
 <script setup lang="ts">

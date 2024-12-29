@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import Layout from '@/layouts/Layout.vue';
 import Container from '@/layouts/Container.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button'
 import AppBreadCrumb from '@/components/AppBreadCrumb.vue';
+import ConfirmButton from '@/components/ConfirmButton.vue';
 
 defineOptions({ layout: [Layout, Container] })
 
@@ -22,10 +23,18 @@ const breadCrumbProps = [{ title: curriculum.title }]
         <AppBreadCrumb :bread-crumb-props="breadCrumbProps" />
         <!-- Curriculum summary -->
         <div class="relative w-full border bg-orange-100 p-8 rounded-md shadow-md">
-            <h1 class="text-3xl font-semibold">{{ curriculum.title }}</h1>
-            <p>from {{ curriculum.start_date }} to {{ curriculum.end_date }}</p>
-            <p>Purpose: {{ curriculum.purpose }}</p>
-            <p>Context: {{ curriculum.Context }}</p>
+            <h1 class="text-3xl font-semibold mb-1">{{ curriculum.title }}</h1>
+            <p class="text-muted-foreground text-sm mb-3">from {{ curriculum.start_date }} to {{ curriculum.end_date }}
+            </p>
+            <p class="mb-3">My motivation: {{ curriculum.purpose }}</p>
+            <div class="flex justify-end">
+                <ConfirmButton @continue="router.delete(curriculum.url)">
+                    <template v-slot:default>Delete Curriculum</template>
+                    <template v-slot:description>
+                        "{{ curriculum.title }}" will be permanently deleted and cannot be undone.
+                    </template>
+                </ConfirmButton>
+            </div>
             <div class="absolute top-0 right-0 bg-orange-300 rounded-tr-md py-1 px-5 shadow-md">
                 {{ curriculum.language.name }}
             </div>

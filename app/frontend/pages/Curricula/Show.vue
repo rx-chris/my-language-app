@@ -33,7 +33,7 @@ const breadCrumbProps = [{ title: curriculum.title }]
         <h2 class="my-5 text-2xl">Lessons:</h2>
 
         <!-- Lesson links -->
-        <div class="grid sm:grid-col md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div v-if="curriculum.lessons.length" class="grid sm:grid-col md:grid-cols-3 lg:grid-cols-4 gap-6">
             <template v-for="lesson in curriculum.lessons">
                 <Link :href="lesson.url">
                 <Card class="flex flex-col justify-between min-h-[300px] hover:bg-gray-100">
@@ -47,6 +47,12 @@ const breadCrumbProps = [{ title: curriculum.title }]
                 </Card>
                 </Link>
             </template>
+        </div>
+        <div v-else class="border rounded-md flex justify-center items-center h-[300px]">
+            <div class="flex flex-col gap-3 items-center">
+                <p>No lessons have been created for this curriculum yet</p>
+                <Button>Generate Lessons</Button>
+            </div>
         </div>
     </div>
 </template>

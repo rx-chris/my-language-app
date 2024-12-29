@@ -3,5 +3,5 @@ class Blueprint < ApplicationRecord
   has_many :cards, dependent: :destroy
 
   # validations
-  validates :name, presence: true
+  validates :name, :instruction, presence: true
 end

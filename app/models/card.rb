@@ -13,5 +13,5 @@ class Card < ApplicationRecord
   has_one_attached :audio_content
 
   # validations
-  validates :instruction, :model_answer, presence: true
+  validates :model_answer, presence: true
 end

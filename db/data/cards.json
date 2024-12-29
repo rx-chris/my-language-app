@@ -1,7 +1,6 @@
 [
   {
-    "instruction": "Type what you hear below:",
-    "blueprint": "Answer",
+    "blueprint": "Listening Comprehension",
     "context": {
       "type": "audio/mpeg",
       "source": "audio url"
@@ -9,8 +8,7 @@
     "model_answer": "今天天气真好"
   },
   {
-    "instruction": "Which option is the correct translation?",
-    "blueprint": "Multiple Choice",
+    "blueprint": "Translate MCQ",
     "context": {
       "type": "图书馆"
     },
@@ -18,8 +16,7 @@
     "model_answer": "library"
   },
   {
-    "instruction": "Describe the image below:",
-    "blueprint": "Answer",
+    "blueprint": "Picture Comprehension MCQ",
     "context": {
       "type": "image/png",
       "source": "image url"
@@ -28,8 +25,7 @@
   },
 
   {
-    "instruction": "Translate the sentence below:",
-    "blueprint": "Answer",
+    "blueprint": "Translate Sentence",
     "context": "她正在学习。",
     "model_answer": "She is studying"
   }

@@ -19,10 +19,13 @@ Blueprint.destroy_all
 
 puts 'cleared all tables'
 
+# load data files
 curricula_data_file_path = File.join(__dir__, 'data', 'curricula.json')
 curricula_data = JSON.parse(File.read(curricula_data_file_path), symbolize_names: true)
 cards_data_file_path = File.join(__dir__, 'data', 'cards.json')
 cards_data = JSON.parse(File.read(cards_data_file_path), symbolize_names: true)
+blueprints_data_file_path = File.join(__dir__, 'data', 'blueprints.json')
+blueprints_data = JSON.parse(File.read(blueprints_data_file_path), symbolize_names: true)
 
 
 # create a user
@@ -53,7 +56,7 @@ CARD_BLUEPRINT_NAMES = [
   "Multiple Choice"
 ]
 
-CARD_BLUEPRINT_NAMES.each { |name| Blueprint.create!(name:) }
+blueprints_data.each { |blueprint_data| Blueprint.create!(blueprint_data) }
 
 puts "created #{Blueprint.all.length} card blueprints"
 
@@ -88,7 +91,6 @@ curricula_data.each do |curriculum_data|
     # create cards
     cards_data.each do |card_data|
       Card.create!(
-        instruction: card_data[:instruction],
         model_answer: card_data[:model_answer],
         blueprint: Blueprint.find_by(name: card_data[:blueprint]),
         lesson:

@@ -7,5 +7,6 @@ class Blueprint < ApplicationRecord
   has_many :cards, dependent: :destroy
 
   # validations
-  validates :name, :instruction, presence: true
+  validates :name, presence: true, uniqueness: true
+  validates :instruction, presence: true
 end

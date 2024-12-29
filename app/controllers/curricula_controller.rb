@@ -9,7 +9,8 @@ class CurriculaController < ApplicationController
         curriculum
           .as_json(include: :lessons)
           .merge(url: curriculum_path(curriculum))
-      end
+      end,
+      new_curriculum_url: new_curriculum_path
     }
   end
 
@@ -21,6 +22,27 @@ class CurriculaController < ApplicationController
         end
       )
     }
+  end
+
+  def new
+    @curriculum = Curriculum.new
+
+    render inertia: "Curricula/New", props: {
+      curriculum: @curriculum.as_json(only: [ :title, :purpose, :start_date, :end_date, :language_id ]),
+      curricula_url: curricula_path,
+      languages: Language.all
+    }
+  end
+
+  def create
+    curriculum = Curriculum.new(curriculum_params)
+    curriculum.user = current_user
+
+    if curriculum.save
+      redirect_to curriculum_path(curriculum)
+    else
+      redirect_to new_curriculum_url, inertia: { errors: curriculum.errors }
+    end
   end
 
   private

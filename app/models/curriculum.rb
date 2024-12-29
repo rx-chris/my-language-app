@@ -8,6 +8,6 @@ class Curriculum < ApplicationRecord
   has_many :selected_card_blueprints, dependent: :destroy
 
   # validations
-  validates :title, :purpose, :start_date, :end_date, :context, presence: true
+  validates :title, :purpose, :start_date, :end_date, presence: true
   # validates :selected_card_blueprints, length: { minimum: 1, too_short: "need to have at least 1 selected card blueprint" }
 end

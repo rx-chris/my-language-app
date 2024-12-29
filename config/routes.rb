@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "curricula#index"
 
-  resources :curricula, only: %i[index show]
+  resources :curricula, only: %i[index show new create]
   resources :lessons, only: %i[show]
   resources :cards, only: %i[show]
 end

@@ -63,3 +63,6 @@ gem "devise", "~> 4.9"
 gem "dotenv-rails", "~> 3.1"
 
 gem "cloudinary", "~> 2.2"
+
+gem "rest-client", "~> 2.1"
+gem "ruby-openai", "~> 7.3"

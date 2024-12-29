@@ -60,7 +60,7 @@ const footerMenuItems = [
                 <template v-for="item in headerMenuItems" :key="item.title">
                     <Link :href="item.url">
                     <SidebarMenuItem :class="`flex justify-center`">
-                        <SidebarMenuButton :class="`${open ? '' : 'bg-yellow-100'} hover:bg-gray-100 mx-2`">
+                        <SidebarMenuButton class="hover:bg-blue-900 mx-2">
                             <div :class="`flex items-center ${open ? 'gap-2 p-0' : ''}`">
                                 <component :is="item.icon" :size="20" />
                                 <span :class="`${open ? '' : 'hidden'}`">
@@ -76,8 +76,8 @@ const footerMenuItems = [
         <SidebarFooter>
             <SidebarMenu>
                 <template v-for="item in footerMenuItems" :key="item.title">
-                    <SidebarMenuItem class="hover:bg-gray-100">
-                        <SidebarMenuButton :class="`${open ? '' : 'bg-yellow-100'}`">
+                    <SidebarMenuItem>
+                        <SidebarMenuButton class="hover:bg-blue-900">
                             <Link :href="item.url" class="flex gap-2">
                             <component :is="item.icon" :size="20" />
                             <span :class="`${open ? '' : 'hidden'}`">{{ item.title }}</span>
@@ -91,4 +91,12 @@ const footerMenuItems = [
     </Sidebar>
 </template>
 
-<style scoped></style>
+<style>
+div[data-sidebar="sidebar"] {
+    background-color: rgb(23, 37, 84);
+}
+
+div[data-sidebar="sidebar"] * {
+    color: white
+}
+</style>

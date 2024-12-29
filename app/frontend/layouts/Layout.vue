@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="bg-slate-100">
         <SidebarProvider :defaultOpen="true">
             <AppSidebar />
             <main style="width: calc(100vw - var(--sidebar-width-icon) - 2.5rem);">

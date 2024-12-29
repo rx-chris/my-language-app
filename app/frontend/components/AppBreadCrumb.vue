@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/breadcrumb'
 import { Link } from '@inertiajs/vue3'
 import { cn } from '@/lib/utils'
+import { BookOpenCheck } from 'lucide-vue-next';
 
 interface BreadCrumbProps {
     title: string,
@@ -26,6 +27,11 @@ const { breadCrumbProps } = defineProps<Props>()
 <template>
     <Breadcrumb :class="cn('mb-3', $attrs.class ?? '')">
         <BreadcrumbList>
+            <BreadcrumbItem>
+                <Link href="/curricula" class="transition-colors hover:text-foreground">
+                <BookOpenCheck :size="16" />
+                </Link>
+            </BreadcrumbItem>
             <template v-for="(prop, index) in breadCrumbProps">
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>

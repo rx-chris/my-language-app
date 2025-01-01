@@ -141,4 +141,36 @@ class OpenAiService
       input_type: "mcq"
     }
   end
+
+  # ----------------------------------------
+  # Image and audio generation
+  # ----------------------------------------
+  # size: "1024x1024", "1024x1792" or "1792x1024"
+  # quality: "standard" or "hd"
+  def generate_image(prompt, size: "1792x1024", quality: "standard", unprocessed: false)
+    response = @client.images.generate(
+      parameters: {
+        prompt:,
+        model: "dall-e-3",
+        size:,
+        quality:
+      }
+    )
+    unprocessed ? response : response.dig("data", 0, "url")
+  end
+
+  def generate_audio(input, voice: "nova", speed: 1.0)
+    audio_file = @client.audio.speech(
+      parameters: {
+        model: "tts-1",
+        response_format: "mp3",
+        input:,
+        voice:,
+        speed:
+      }
+    )
+    filename = "#{DateTime.now.strftime('%Q').to_i}.mp3"
+    filepath = Rails.root.join("tmp", filename)
+    File.binwrite(filepath, audio_file)
+  end
 end

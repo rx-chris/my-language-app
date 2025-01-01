@@ -14,6 +14,10 @@ Rails.application.routes.draw do
   root "curricula#index"
 
   resources :curricula, only: %i[index show new create destroy]
-  resources :lessons, only: %i[show]
+  resources :lessons, only: %i[show] do
+    post :generate, on: :collection
+    post :batch_create, on: :collection
+    post :batch_create_with_cards, on: :collection
+  end
   resources :cards, only: %i[show]
 end

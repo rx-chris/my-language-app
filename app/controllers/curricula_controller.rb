@@ -21,7 +21,10 @@ class CurriculaController < ApplicationController
           lesson.as_json.merge(url: lesson_path(lesson))
         end,
         url: curriculum_path(@curriculum)
-      )
+      ),
+      generate_lessons_url: generate_lessons_path,
+      batch_create_lessons_url: batch_create_lessons_path,
+      blueprints: Blueprint.all
     }
   end
 

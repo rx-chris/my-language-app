@@ -6,14 +6,25 @@ import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from '@/comp
 import { Button } from '@/components/ui/button'
 import AppBreadCrumb from '@/components/AppBreadCrumb.vue';
 import ConfirmButton from '@/components/ConfirmButton.vue';
+import GenerateLessons from './components/GenerateLessons.vue';
 
 defineOptions({ layout: [Layout, Container] })
 
 interface Props {
-    curriculum: any
+    curriculum: any,
+    generate_lessons_url: string,
+    batch_create_lessons_url: string,
+    blueprints: any
 }
 
-const { curriculum } = defineProps<Props>()
+const {
+    curriculum,
+    generate_lessons_url,
+    batch_create_lessons_url,
+    blueprints
+} = defineProps<Props>()
+
+console.log(blueprints)
 
 const breadCrumbProps = [{ title: curriculum.title }]
 </script>
@@ -21,12 +32,14 @@ const breadCrumbProps = [{ title: curriculum.title }]
     <div>
         <!-- Breadcrumb -->
         <AppBreadCrumb :bread-crumb-props="breadCrumbProps" />
+
         <!-- Curriculum summary -->
         <div class="relative w-full border bg-orange-100 p-8 rounded-md shadow-md">
             <h1 class="text-3xl font-semibold mb-1">{{ curriculum.title }}</h1>
             <p class="text-muted-foreground text-sm mb-3">from {{ curriculum.start_date }} to {{ curriculum.end_date }}
             </p>
-            <p class="mb-3">My motivation: {{ curriculum.purpose }}</p>
+            <p>Learning objective:</p>
+            <p class="mb-3">{{ curriculum.purpose }}</p>
             <div class="flex justify-end">
                 <ConfirmButton @continue="router.delete(curriculum.url)">
                     <template v-slot:default>Delete Curriculum</template>
@@ -57,10 +70,15 @@ const breadCrumbProps = [{ title: curriculum.title }]
                 </Link>
             </template>
         </div>
+
+        <!-- Render button to generate lessons if no lessons found -->
         <div v-else class="border rounded-md flex justify-center items-center h-[300px]">
             <div class="flex flex-col gap-3 items-center">
-                <p>No lessons have been created for this curriculum yet</p>
-                <Button>Generate Lessons</Button>
+                <p class="text-muted-foreground text-lg">No lessons have been created for this curriculum yet.</p>
+                <Button>Create a lesson</Button>
+                <p>or</p>
+                <GenerateLessons :curriculum="curriculum" :generate_lessons_url="generate_lessons_url"
+                    :batch_create_lessons_url="batch_create_lessons_url" :blueprints="blueprints" />
             </div>
         </div>
     </div>

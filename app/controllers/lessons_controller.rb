@@ -15,6 +15,38 @@ class LessonsController < ApplicationController
     }
   end
 
+  def generate
+    request_body = generate_params.to_h
+    response = OpenAiService.new.generate_lessons(request_body)
+
+    render json: response.as_json
+  end
+
+  def batch_create
+    curriculum = Curriculum.find(params[:curriculum_id])
+
+    params[:lessons].each_with_index { |lesson, index| Lesson.create!(
+      title: lesson[:title],
+      description: lesson[:description],
+      curriculum: curriculum,
+      order: index + 1
+    )}
+
+    redirect_to curriculum_path(curriculum)
+  end
+
+  def batch_create_with_cards
+    lessons = params[:lessons].map.with_index do |lesson, index|
+    {
+      title: lesson[:title],
+      description: lesson[:description],
+      curriculum: curriculum,
+      order: index + 1
+    }
+      # TODO: Create lessons and cards on background job
+    end
+  end
+
   private
 
   def set_lesson
@@ -23,5 +55,13 @@ class LessonsController < ApplicationController
 
   def lesson_params
     params.require(:lesson).permit(:title, :description)
+  end
+
+  def generate_params
+    params.permit(:language_id, :lesson_count, :learning_objective)
+  end
+
+  def batch_create_lessons_params
+    params.permit(:curriculum_id, lessons: [])
   end
 end

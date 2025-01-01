@@ -1,13 +1,7 @@
 [
   {
-    "name": "Translate Phrase",
-    "instruction": "Translate the following phrase",
-    "content_type": "text_content",
-    "input_type": "text"
-  },
-  {
-    "name": "Translate Sentence",
-    "instruction": "Translate the following sentence",
+    "name": "Translate Text",
+    "instruction": "Translate the following phrase or sentence",
     "content_type": "text_content",
     "input_type": "text"
   },
@@ -31,7 +25,7 @@
   },
   {
     "name": "Picture Comprehension MCQ",
-    "instruction": "Look at the image and select the correct answer",
+    "instruction": "Select the answer that best describes the image",
     "content_type": "image_content",
     "input_type": "mcq"
   }

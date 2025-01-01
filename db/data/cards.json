@@ -25,7 +25,7 @@
   },
 
   {
-    "blueprint": "Translate Sentence",
+    "blueprint": "Translate Text",
     "context": "她正在学习。",
     "model_answer": "She is studying"
   }

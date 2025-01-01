@@ -56,5 +56,12 @@
         "description": "This lesson is focused on practical conversation. You will learn how to introduce yourself, ask for directions, and express simple requests. Practice listening and speaking with dialogues in everyday scenarios."
       }
     ]
+  },
+  {
+    "title": "Learn Holiday Japanese",
+    "purpose": "I will be going on holiday to Japan for 7 days I would like to learn common Japanese phrases that can help me communicate effectively with the locals.",
+    "context": "nil",
+    "language": "Japanese",
+    "lessons": []
   }
 ]

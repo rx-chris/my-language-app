@@ -169,7 +169,7 @@ class OpenAiService
         speed:
       }
     )
-    filename = "#{DateTime.now.strftime('%Q').to_i}.mp3"
+    filename = "#{DateTime.now.strftime('%Q').to_i}_audio.mp3"
     filepath = Rails.root.join("tmp", filename)
     File.binwrite(filepath, audio_file)
     filepath

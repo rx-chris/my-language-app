@@ -24,27 +24,31 @@ class LessonsController < ApplicationController
 
   def batch_create
     curriculum = Curriculum.find(params[:curriculum_id])
+    selected_blueprints = params[:selected_blueprints]
+    lessons = params[:lessons].map.with_index do |lesson, index|
+      {
+        title: lesson[:title],
+        description: lesson[:description],
+        curriculum: curriculum,
+        order: index + 1
+      }
+    end
 
-    params[:lessons].each_with_index { |lesson, index| Lesson.create!(
-      title: lesson[:title],
-      description: lesson[:description],
-      curriculum: curriculum,
-      order: index + 1
-    )}
+    if selected_blueprints.nil?
+      lessons.each { |lesson| Lesson.create!(lesson) }
+    else
+      curriculum.selected_card_blueprints.delete_all
+      selected_blueprints.each do |data|
+        SelectedCardBlueprint.create!(
+          curriculum:,
+          blueprint: Blueprint.find(data[:id]),
+          count: data[:count]
+        )
+      end
+      CreateLessonsJob.perform_later(lessons)
+    end
 
     redirect_to curriculum_path(curriculum)
-  end
-
-  def batch_create_with_cards
-    lessons = params[:lessons].map.with_index do |lesson, index|
-    {
-      title: lesson[:title],
-      description: lesson[:description],
-      curriculum: curriculum,
-      order: index + 1
-    }
-      # TODO: Create lessons and cards on background job
-    end
   end
 
   private

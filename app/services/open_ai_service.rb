@@ -9,7 +9,7 @@ class OpenAiService
   # Lesson Generation
   # ----------------------------------------
 
-  def generate_lessons(request, unprocessed: false)
+  def generate_lessons(request, unprocessed: false, symbolize_names: true)
     response = @client.chat(
       parameters: {
         model: "gpt-4o-mini",
@@ -21,7 +21,7 @@ class OpenAiService
         }
       }
     )
-    unprocessed ? response : response.dig("choices", 0, "message", "content")
+    unprocessed ? response : JSON.parse(response.dig("choices", 0, "message", "content"), symbolize_names:)
   end
 
   def test_lessons_generation
@@ -30,7 +30,7 @@ class OpenAiService
 
   def mock_lessons_request
     {
-      language_id: 54,
+      language_id: Language.find_by(name: "Japanese").id,
       lesson_count: 10,
       learning_objective: "I will be going on holiday to Japan for 7 days I would like to learn common Japanese phrases that can help me communicate effectively with the locals."
     }
@@ -50,7 +50,7 @@ class OpenAiService
   # ----------------------------------------
   # Cards Generation
   # ----------------------------------------
-  def generate_cards(request, unprocessed: false)
+  def generate_cards(request, unprocessed: false, symbolize_names: true)
     response = @client.chat(
       parameters: {
         model: "gpt-4o-mini",
@@ -62,7 +62,7 @@ class OpenAiService
         }
       }
     )
-    unprocessed ? response : response.dig("choices", 0, "message", "content")
+    unprocessed ? response : JSON.parse(response.dig("choices", 0, "message", "content"), symbolize_names:)
   end
 
   def cards_message_content(req)
@@ -172,5 +172,6 @@ class OpenAiService
     filename = "#{DateTime.now.strftime('%Q').to_i}.mp3"
     filepath = Rails.root.join("tmp", filename)
     File.binwrite(filepath, audio_file)
+    filepath
   end
 end

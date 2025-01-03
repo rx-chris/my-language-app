@@ -1,3 +1,5 @@
+require "open-uri"
+
 class CreateCardsJob < ApplicationJob
   queue_as :default
 
@@ -23,6 +25,7 @@ class CreateCardsJob < ApplicationJob
         lesson:,
         model_answer: data[:model_answer]
       )
+      # set card content
       case selected_blueprint.blueprint.content_type
       when "text_content"
         card.text_content = data[:text_content]
@@ -38,6 +41,11 @@ class CreateCardsJob < ApplicationJob
         card.image_content.attach(io: file, filename:, content_type: "image/png")
       end
       card.save!
+
+      # create mcq options for MCQ cards (only text options for now)
+      if selected_blueprint.blueprint.input_type == "mcq"
+        data[:mcq_options].each { |text_content| McqOption.create!(text_content:, card:) }
+      end
     end
   end
 end

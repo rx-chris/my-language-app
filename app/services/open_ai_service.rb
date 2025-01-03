@@ -71,7 +71,7 @@ class OpenAiService
       "audio_content" => "audio_content: Provide a phrase or sentence in #{req[:language]} that will represent an audio file.",
       "image_content" => "image_content: Provide an image caption to be used for image generation. Be as descriptive as possible"
     }
-    in_language = req[:content_type] == "image_content" ? "in #{req[:language]} " : ""
+    in_language = req[:content_type] == "image_content" ? " The answer should be in #{req[:language]}." : ""
 
     message = "I am designing a #{req[:language]} lesson with the following title and description:\n"
     message += "- title: \"#{req[:lesson_title]}\"\n"
@@ -80,7 +80,7 @@ class OpenAiService
 
     card_details = [ "instruction: Card instructions that says \"#{req[:instruction]}\"" ]
     card_details << contents[req[:content_type]]
-    card_details << "model_answer: Provide the correct answer #{in_language}based on the 'instruction' and '#{req[:content_type]}'"
+    card_details << "model_answer: Provide the correct answer based on the 'instruction' and '#{req[:content_type]}'#{in_language}"
     card_details << "pronunciation: Provide the pronunciation of the 'model_answer' only if it is in #{req[:language]} or else this should be 'null'"
 
     if req[:input_type] == "mcq"

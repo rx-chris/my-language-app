@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { BookmarkCheck, CircleCheck, CircleX, LoaderCircle } from 'lucide-vue-next';
 import { computed } from 'vue';
+import { Badge } from './ui/badge';
 
 interface Props {
     card: any
@@ -20,11 +21,11 @@ const statusIcon = computed(() => {
             <BookmarkCheck />
         </div>
         <div class="grow">
-            {{ card.instruction }}
+            {{ card.blueprint.instruction }}
         </div>
-        <div>
+        <Badge>
             {{ card.blueprint.name }}
-        </div>
+        </Badge>
         <div>
             <component :is="statusIcon" />
         </div>

@@ -51,7 +51,7 @@ const breadCrumbProps = [
             </CardContent>
         </Card>
 
-        <h2>Cards</h2>
+        <h2 class="mb-2 mt-4 text-xl font-semibold">Cards:</h2>
         <!-- Cards -->
         <div class="flex flex-col gap-1.5 mt-3">
             <template v-for="card in lesson.cards" :key="card.id">

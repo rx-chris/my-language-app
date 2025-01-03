@@ -3,7 +3,7 @@ class LessonsController < ApplicationController
 
   def show
     curriculum = @lesson.curriculum.as_json.merge(url: curriculum_path(@lesson.curriculum))
-    cards = @lesson.cards.map do |card|
+    cards = @lesson.cards.order(:id).map do |card|
         card.as_json(include: :blueprint).merge(
           learning_url: card_path(card, mode: Card::LEARNING),
           test_url: card_path(card, mode: Card::TEST)

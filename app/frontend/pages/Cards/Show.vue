@@ -6,7 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button, buttonVariants } from '@/components/ui/button'
 import AppBreadCrumb from '@/components/AppBreadCrumb.vue';
-import { BookmarkCheck } from 'lucide-vue-next';
+import { BookmarkCheck, Bookmark } from 'lucide-vue-next';
+import getCsrfToken from '@/lib/getCsrfToken';
 
 // ----------------------------------------------------------
 // Props
@@ -15,11 +16,18 @@ import { BookmarkCheck } from 'lucide-vue-next';
 defineOptions({ layout: [Layout, Container] })
 
 interface Props {
-    card: any,
-    next_card_url: string
+    card: any;
+    prev_card_url: string;
+    next_card_url: string;
+    bookmark_card_url: string;
 }
 
-const { card, next_card_url } = defineProps<Props>()
+const {
+    card,
+    prev_card_url,
+    next_card_url,
+    bookmark_card_url
+} = defineProps<Props>()
 
 console.log(card)
 console.log(next_card_url)
@@ -56,6 +64,20 @@ const form = useForm({
     user_answer: ""
 })
 
+// event handler
+const toggleBookmark = async () => {
+    const response = await fetch(bookmark_card_url, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            'X-CSRF-Token': getCsrfToken()
+        }
+    });
+
+    if (!response.ok) return;
+    card.bookmarked = !card.bookmarked
+}
 </script>
 <template>
     <div>
@@ -77,8 +99,9 @@ const form = useForm({
                 </div>
                 <p v-if="isLearningMode()" class="text-center mt-4 text-3xl">{{ card.model_answer }}</p>
             </div>
-            <button class="absolute top-4 right-4">
-                <BookmarkCheck />
+            <button type="button" @click="toggleBookmark" class="absolute top-4 right-4 hover:scale-110">
+                <BookmarkCheck v-if="card.bookmarked" />
+                <Bookmark v-else class="text-muted-foreground" />
             </button>
         </div>
 
@@ -89,7 +112,6 @@ const form = useForm({
                 <template v-if="isMcqInput()">
                     <div class="flex justify-center m-6">
                         <div class="grid grid-cols-4 gap-4">
-
                             <div v-for="mcqOption in card.mcq_options" :key="mcqOption.id"
                                 class="border rounded-md hover:bg-slate-200">
                                 <input type="radio" :id="`mcq_option_${mcqOption.id}`" :value="mcqOption.id"
@@ -109,6 +131,7 @@ const form = useForm({
                 <!-- answer and next buttons -->
                 <div class="flex justify-center">
                     <div class="flex gap-3 items-center">
+                        <Link :href="prev_card_url" :class="buttonVariants()">Previous</Link>
                         <Button type="submit">Answer</Button>
                         <Link :href="next_card_url" :class="buttonVariants()">Next</Link>
                     </div>
@@ -117,7 +140,8 @@ const form = useForm({
         </template>
         <template v-else-if="isLearningMode()">
             <!-- answer and next buttons -->
-            <div class="flex justify-center">
+            <div class="flex justify-center gap-3">
+                <Link :href="prev_card_url" :class="buttonVariants()">Previous</Link>
                 <Link :href="next_card_url" :class="buttonVariants()">Next</Link>
             </div>
         </template>

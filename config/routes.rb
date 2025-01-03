@@ -19,5 +19,7 @@ Rails.application.routes.draw do
     post :batch_create, on: :collection
     post :batch_create_with_cards, on: :collection
   end
-  resources :cards, only: %i[show]
+  resources :cards, only: %i[show] do
+    patch :bookmark, on: :member
+  end
 end

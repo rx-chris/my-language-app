@@ -33,12 +33,9 @@ const {
     blueprints
 } = defineProps<Props>()
 
-// define form data
-interface GenerateLessonsData {
-    language_id: number
-    lesson_count: number
-    learning_objective: string
-}
+// -----------------------------------------
+// component states
+// -----------------------------------------
 
 enum FormState {
     Loading,
@@ -47,27 +44,38 @@ enum FormState {
     SelectBlueprints
 }
 
+const formState = ref(FormState.Generate)
+
+// page 1 states
+interface GenerateLessonsData {
+    language_id: number
+    lesson_count: number
+    learning_objective: string
+}
+
 const form = useForm<GenerateLessonsData>({
     language_id: curriculum.language_id,
-    lesson_count: 0,
-    learning_objective: ''
+    lesson_count: 1,
+    learning_objective: curriculum.purpose
 })
 
-const lessons = ref<{ title: string; description: string }[]>([
-    { title: 'test', description: 'test' },
-    { title: 'test', description: 'test' }
-])
+// page 2 states
+const lessons = ref<{ title: string; description: string }[]>([])
 const generateCards = ref(true)
-const formState = ref(FormState.LessonsList)
+
+// page 3 states
 const selectAllBlueprints = ref(true)
 const selectedBlueprints = ref<
     {
-        id: number
-        checked: boolean
+        id: number;
+        count: number;
+        checked: boolean;
     }[]
->(blueprints.map(({ id }: { id: number }) => ({ id, checked: true })))
+>(blueprints.map(({ id }: { id: number }) => ({ id, count: 1, checked: true })))
 
+// -----------------------------------------
 // event handlers
+// -----------------------------------------
 const generateLessons = async () => {
     formState.value = FormState.Loading
     const response = await fetch(generate_lessons_url, {
@@ -93,29 +101,40 @@ const batchCreateLessons = () => {
         curriculum_id: curriculum.id
     })
 }
+
+const batchCreateLessonsWithCards = () => {
+    router.post(batch_create_lessons_url, {
+        lessons: lessons.value,
+        curriculum_id: curriculum.id,
+        selected_blueprints: selectedBlueprints.value.filter(b => b.checked)
+    })
+}
 </script>
 
 <template>
-    <Dialog>
+    <Dialog @update:open="(opened) => { if (opened) { formState = FormState.Generate } }">
         <DialogTrigger as-child>
             <Button> Generate lessons with AI </Button>
         </DialogTrigger>
         <DialogScrollContent class="sm:max-w-[600px]">
             <DialogHeader>
-                <DialogTitle>Edit profile</DialogTitle>
+                <DialogTitle>Generate Lessons</DialogTitle>
                 <DialogDescription>
-                    Make changes to your profile here. Click save when you're done.
+                    <p>Fill in the form below to generate lessons with AI</p>
                 </DialogDescription>
             </DialogHeader>
-
             <!-- Page 1: Form to generate lessons with Open AI -->
             <form v-if="formState === FormState.Generate" @submit.prevent="generateLessons">
-                <div>
-                    <Label>How many lessons do you want to generate?</Label>
+                <div class="flex flex-col gap-3">
+                    <Label>
+                        How many lessons do you want to generate?
+                    </Label>
                     <Input type="number" v-model="form.lesson_count" />
                 </div>
-                <div class="flex flex-col gap-2">
-                    <Label for="learning_objective">What do I want to learn?</Label>
+                <div class="flex flex-col gap-3 my-4">
+                    <Label for="learning_objective">
+                        What do I want to learn?
+                    </Label>
                     <Textarea id="learning_objective" v-model="form.learning_objective"></Textarea>
                 </div>
                 <DialogFooter>
@@ -150,7 +169,7 @@ const batchCreateLessons = () => {
 
             <!-- Page 3: Form to select card blueprints for card generation with Open AI -->
             <form v-else-if="formState === FormState.SelectBlueprints">
-                <ul>
+                <ul class="mb-4">
                     <li class="flex items-center gap-1 mb-4 ml-3">
                         <Checkbox id="selectAllBlueprints" v-model:checked="selectAllBlueprints"
                             @update:checked="(checked) => selectedBlueprints = selectedBlueprints.map(x => ({ ...x, checked }))" />
@@ -159,26 +178,27 @@ const batchCreateLessons = () => {
                         </Label>
                     </li>
                     <hr>
-                    <li v-for="(blueprint, index) in blueprints" :key="blueprint.id"
+                    <li v-for="(blueprint, i) in blueprints" :key="blueprint.id"
                         class="flex items-center gap-1 my-2 ml-3">
                         <Checkbox :id="`blueprint_${blueprint.id}`" :value="blueprint.id.toString()"
-                            v-model:checked="selectedBlueprints[index].checked" />
-                        <Label :for="`blueprint_${blueprint.id}`">
+                            v-model:checked="selectedBlueprints[i].checked" />
+                        <Label :for="`blueprint_${blueprint.id}`" class="grow">
                             {{ blueprint.name }}
                         </Label>
+                        <Input type="number" v-model="selectedBlueprints[i].count" class="w-16"
+                            :disabled="!selectedBlueprints[i].checked" />
                     </li>
-                    <DialogFooter>
-                        <Button type="button" @click="() => (formState = FormState.LessonsList)">Go back</Button>
-                        <Button type="button" @click="batchCreateLessons">Create Lessons</Button>
-                    </DialogFooter>
-                    <button type="button"
-                        @click="console.log(selectedBlueprints.filter(x => x.checked).map(x => x.id))">
-                        test
-                    </button>
                 </ul>
+                <DialogFooter>
+                    <Button type="button" @click="() => (formState = FormState.LessonsList)">Go back</Button>
+                    <Button type="button" @click="batchCreateLessonsWithCards">Create Lessons</Button>
+                </DialogFooter>
             </form>
-            <div v-else class="flex items-center justify-center">
-                <Loader class="animate-spin" :size="30" />
+            <div v-else>
+                <p class="text-center">Please wait lessons are being generated.</p>
+                <div class="flex items-center justify-center">
+                    <Loader class="animate-spin" :size="30" />
+                </div>
             </div>
         </DialogScrollContent>
     </Dialog>

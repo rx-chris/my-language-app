@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_31_091354) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_03_164716) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -47,7 +47,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_31_091354) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "instruction", null: false
-    t.integer "input_type", default: 0, null: false
+    t.integer "answer_type", default: 0, null: false
     t.integer "content_type", default: 0, null: false
   end
 
@@ -93,6 +93,17 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_31_091354) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["curriculum_id"], name: "index_lessons_on_curriculum_id"
+  end
+
+  create_table "mcq_answers", force: :cascade do |t|
+    t.bigint "user_answer_id"
+    t.bigint "model_answer_id", null: false
+    t.bigint "card_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_mcq_answers_on_card_id"
+    t.index ["model_answer_id"], name: "index_mcq_answers_on_model_answer_id"
+    t.index ["user_answer_id"], name: "index_mcq_answers_on_user_answer_id"
   end
 
   create_table "mcq_options", force: :cascade do |t|
@@ -234,6 +245,15 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_31_091354) do
     t.index ["key"], name: "index_solid_queue_semaphores_on_key", unique: true
   end
 
+  create_table "text_answers", force: :cascade do |t|
+    t.text "user_answer"
+    t.text "model_answer", null: false
+    t.bigint "card_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_text_answers_on_card_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -254,6 +274,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_31_091354) do
   add_foreign_key "curricula", "languages"
   add_foreign_key "curricula", "users"
   add_foreign_key "lessons", "curricula"
+  add_foreign_key "mcq_answers", "cards"
   add_foreign_key "mcq_options", "cards"
   add_foreign_key "selected_card_blueprints", "blueprints"
   add_foreign_key "selected_card_blueprints", "curricula"
@@ -263,4 +284,5 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_31_091354) do
   add_foreign_key "solid_queue_ready_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_recurring_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
   add_foreign_key "solid_queue_scheduled_executions", "solid_queue_jobs", column: "job_id", on_delete: :cascade
+  add_foreign_key "text_answers", "cards"
 end

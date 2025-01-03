@@ -54,7 +54,7 @@ const isAudioContent = () => card.blueprint.content_type === 'audio_content';
 const isImageContent = () => card.blueprint.content_type === 'image_content';
 
 // methods to check input type
-const isMcqInput = () => card.blueprint.input_type === 'mcq';
+const isMcqInput = () => card.blueprint.answer_type === 'mcq';
 
 // methods to check mode
 const isLearningMode = () => card.mode === "learning";

@@ -112,7 +112,7 @@ class OpenAiService
       card_count: 10,
       instruction: "Translate the following phrase or sentence",
       content_type: "text_content",
-      input_type: "text"
+      input_type: "text_answer"
     }
   end
 
@@ -125,7 +125,7 @@ class OpenAiService
       card_count: 1,
       instruction: "Listen to the audio and select the correct answer.",
       content_type: "audio_content",
-      input_type: "mcq"
+      input_type: "mcq_answer"
     }
   end
 
@@ -138,7 +138,7 @@ class OpenAiService
       card_count: 1,
       instruction: "Select the answer that best describes the image",
       content_type: "image_content",
-      input_type: "mcq"
+      input_type: "mcq_answer"
     }
   end
 

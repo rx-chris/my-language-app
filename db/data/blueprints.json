@@ -3,30 +3,30 @@
     "name": "Translate Text",
     "instruction": "Translate the following phrase or sentence",
     "content_type": "text_content",
-    "input_type": "text"
+    "input_type": "text_answer"
   },
   {
     "name": "Translate MCQ",
     "instruction": "Which of the following is the corrrect translation?",
     "content_type": "text_content",
-    "input_type": "mcq"
+    "input_type": "mcq_answer"
   },
   {
     "name": "Listening Comprehension",
     "instruction": "Type what you hear.",
     "content_type": "audio_content",
-    "input_type": "text"
+    "input_type": "text_answer"
   },
   {
     "name": "Listening Comprehension MCQ",
     "instruction": "Listen to the audio and select the correct answer.",
     "content_type": "audio_content",
-    "input_type": "mcq"
+    "input_type": "mcq_answer"
   },
   {
     "name": "Picture Comprehension MCQ",
     "instruction": "Select the answer that best describes the image",
     "content_type": "image_content",
-    "input_type": "mcq"
+    "input_type": "mcq_answer"
   }
 ]

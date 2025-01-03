@@ -43,7 +43,7 @@ class CreateCardsJob < ApplicationJob
       card.save!
 
       # create mcq options for MCQ cards (only text options for now)
-      if selected_blueprint.blueprint.input_type == "mcq"
+      if selected_blueprint.blueprint.input_type == "mcq_answer"
         data[:mcq_options].each { |text_content| McqOption.create!(text_content:, card:) }
       end
     end

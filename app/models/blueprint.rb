@@ -1,6 +1,6 @@
 class Blueprint < ApplicationRecord
   # enums
-  enum :input_type, [ :text, :mcq ]
+  enum :input_type, [ :text_answer, :mcq_answer ]
   enum :content_type, [ :text_content, :audio_content, :image_content ]
 
   # association

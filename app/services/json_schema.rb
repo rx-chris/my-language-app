@@ -26,7 +26,7 @@ module Json_Schema
   }
 
   # Dynamically generate a cards schema based on the content_type and input_type
-  def self.cards_schema(args = { content_type: "text_content", input_type: "text" })
+  def self.cards_schema(args = { content_type: "text_content", input_type: "text_answer" })
     args => { content_type:, input_type:}
 
     properties = {
@@ -67,7 +67,7 @@ module Json_Schema
       items: {
         type: "string"
       }
-    } if input_type == "mcq"
+    } if input_type == "mcq_answer"
 
     # final schema
     {

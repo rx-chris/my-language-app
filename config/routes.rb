@@ -21,5 +21,6 @@ Rails.application.routes.draw do
   end
   resources :cards, only: %i[show] do
     patch :bookmark, on: :member
+    post :attempt, on: :member
   end
 end

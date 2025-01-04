@@ -1,5 +1,5 @@
 class CardsController < ApplicationController
-  before_action :set_card, only: %i[show bookmark]
+  before_action :set_card, only: %i[show bookmark attempt]
 
   def show
     mode = params[:mode]
@@ -24,10 +24,11 @@ class CardsController < ApplicationController
       end
 
       render inertia: "Cards/Show", props: {
-        card: @card.as_json(include: [ :blueprint, :mcq_options ]).merge(card_props),
-        prev_card_url: prev_card ? card_path(prev_card) : lesson_path(@card.lesson),
-        next_card_url: next_card ? card_path(next_card) : lesson_path(@card.lesson),
-        bookmark_card_url: bookmark_card_path(@card)
+        card: @card.as_json(include: [ :blueprint, :mcq_options, :text_answer, { mcq_answer: { include: [ :user_answer, :model_answer ] } } ]).merge(card_props),
+        prev_card_url: prev_card ? card_path(prev_card, mode:) : lesson_path(@card.lesson),
+        next_card_url: next_card ? card_path(next_card, mode:) : lesson_path(@card.lesson),
+        bookmark_card_url: bookmark_card_path(@card),
+        attempt_card_url: attempt_card_path(@card)
       }
     else
       redirect_to card_path(@card, mode: Card::LEARNING)
@@ -42,6 +43,14 @@ class CardsController < ApplicationController
     else
       render json: { success: false, errors: @card.errors }, status: :unprocessable_entity
     end
+  end
+
+  def attempt
+    user_answer = params[:user_answer]
+
+    @card.answer!(user_answer)
+
+    redirect_to card_path(@card, mode: Card::TEST)
   end
 
   private

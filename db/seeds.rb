@@ -10,6 +10,8 @@
 require 'json'
 
 # clear all tables
+TextAnswer.destroy_all
+McqAnswer.destroy_all
 Card.destroy_all
 Lesson.destroy_all
 Curriculum.destroy_all
@@ -90,11 +92,8 @@ curricula_data.each do |curriculum_data|
 
     # create cards
     cards_data.each do |card_data|
-      Card.create!(
-        model_answer: card_data[:model_answer],
-        blueprint: Blueprint.find_by(name: card_data[:blueprint]),
-        lesson:
-      )
+      blueprint = Blueprint.find_by(name: card_data[:blueprint])
+      Card.create!(blueprint:, lesson:)
     end
   end
 end

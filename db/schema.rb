@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_03_164716) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_04_042328) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -53,8 +53,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_03_164716) do
 
   create_table "cards", force: :cascade do |t|
     t.text "text_content"
-    t.text "user_answer"
-    t.text "model_answer", null: false
     t.bigint "lesson_id", null: false
     t.bigint "blueprint_id", null: false
     t.boolean "correct"

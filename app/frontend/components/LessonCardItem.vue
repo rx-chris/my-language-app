@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { BookmarkCheck, Bookmark, CircleCheck, CircleX, LoaderCircle } from 'lucide-vue-next';
+import { BookmarkCheck, Bookmark, CircleCheck, CircleX, LoaderCircle, BookOpenText, CircleDashed, CircleDotDashed } from 'lucide-vue-next';
 import { Badge } from './ui/badge';
 
 interface Props {
-    card: any
+    card: any,
+    mode?: string | null
 }
 
-const { card } = defineProps<Props>()
+const { card, mode = "learning" } = defineProps<Props>()
+
+const isLearningMode = () => mode === 'learning';
+
 </script>
 <template>
     <div
@@ -16,15 +20,16 @@ const { card } = defineProps<Props>()
             <Bookmark v-else class="text-muted-foreground opacity-50" />
         </div>
         <div class="grow">
-            {{ card.blueprint.instruction }}
+            {{ isLearningMode() ? card.model_text_answer : card.blueprint.instruction }}
         </div>
-        <Badge>
+        <Badge v-if="!isLearningMode()">
             {{ card.blueprint.name }}
         </Badge>
         <div class="flex justify-center w-10">
-            <LoaderCircle v-if="card.correct === null" class="animate-spin text-muted-foreground" />
-            <CircleCheck v-else-if="card.correct" class="text-green-600 animate-pulse" />
-            <CircleX v-else class="text-red-600 animate-pulse" />
+            <BookOpenText v-if="isLearningMode()" class="text-muted-foreground" />
+            <CircleDotDashed v-else-if="card.correct === null" class="text-muted-foreground animate-pulse" />
+            <CircleCheck v-else-if="card.correct" class="text-green-600" />
+            <CircleX v-else class="text-red-600" />
         </div>
     </div>
 </template>

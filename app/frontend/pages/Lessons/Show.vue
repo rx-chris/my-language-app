@@ -15,7 +15,7 @@ defineOptions({ layout: [Layout, Container] })
 
 interface Props {
     lesson: any;
-    mode: string | null;
+    mode: string;
 }
 
 const { lesson, mode } = defineProps<Props>()
@@ -29,10 +29,9 @@ const breadCrumbProps = [
         title: lesson.title,
     }
 ]
+const cardMode = ref(mode)
 
-const isLearningMode = ref(true)
-
-if (mode === "test") isLearningMode.value === false
+const isLearningMode = ref(cardMode.value === "learning")
 </script>
 
 <template>
@@ -63,13 +62,14 @@ if (mode === "test") isLearningMode.value === false
         <div class="flex items-center gap-4 mb-2 mt-6">
             <h2 class="text-xl font-semibold grow">Cards:</h2>
             <Label for="mode">{{ isLearningMode ? 'Learning' : 'Quiz' }} Mode</Label>
-            <Switch id="mode" v-model:checked="isLearningMode" />
+            <Switch id="mode" v-model:checked="isLearningMode"
+                @update:checked="(val) => cardMode = val ? 'learning' : 'test'" />
         </div>
         <!-- Cards -->
         <div class="flex flex-col gap-1.5 mt-3">
             <template v-for="card in lesson.cards" :key="card.id">
                 <Link :href="isLearningMode ? card.learning_url : card.test_url">
-                <LessonCardItem :card="card" />
+                <LessonCardItem :card="card" :mode="cardMode" />
                 </Link>
             </template>
         </div>

@@ -13,4 +13,8 @@ class TextAnswer < ApplicationRecord
   def answer!(answer)
     update(user_answer: answer)
   end
+
+  def model_text_answer
+    model_answer
+  end
 end

@@ -31,6 +31,10 @@ class Card < ApplicationRecord
     answer.update!(user_answer: nil)
   end
 
+  def model_text_answer
+    answer.model_text_answer
+  end
+
   private
 
   def answer

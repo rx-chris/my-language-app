@@ -16,4 +16,8 @@ class McqAnswer < ApplicationRecord
   def answer!(id)
     update!(user_answer: mcq_options.find_by(id:))
   end
+
+  def model_text_answer
+    model_answer.text_content
+  end
 end

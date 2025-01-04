@@ -54,7 +54,8 @@ const isAudioContent = () => card.blueprint.content_type === 'audio_content';
 const isImageContent = () => card.blueprint.content_type === 'image_content';
 
 // methods to check input type
-const isMcqInput = () => card.blueprint.answer_type === 'mcq';
+const isMcqAnswer = () => card.blueprint.answer_type === 'mcq_answer';
+const isTextAnswer = () => card.blueprint.answer_type === 'text_answer';
 
 // methods to check mode
 const isLearningMode = () => card.mode === "learning";
@@ -109,7 +110,7 @@ const toggleBookmark = async () => {
             <p class="text-center my-3">{{ card.blueprint.instruction }}</p>
             <form>
                 <!-- Render inputs based on input type -->
-                <template v-if="isMcqInput()">
+                <template v-if="isMcqAnswer()">
                     <div class="flex justify-center m-6">
                         <div class="grid grid-cols-4 gap-4">
                             <div v-for="mcqOption in card.mcq_options" :key="mcqOption.id"
@@ -123,7 +124,7 @@ const toggleBookmark = async () => {
                         </div>
                     </div>
                 </template>
-                <template v-else>
+                <template v-else-if="isTextAnswer()">
                     <div class="my-3 mx-5">
                         <Input placeholder="Type your answer here" />
                     </div>

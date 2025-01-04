@@ -23,7 +23,6 @@ class CreateCardsJob < ApplicationJob
       card = Card.new(
         blueprint: selected_blueprint.blueprint,
         lesson:,
-        model_answer: data[:model_answer]
       )
       # set card content
       case selected_blueprint.blueprint.content_type
@@ -42,9 +41,14 @@ class CreateCardsJob < ApplicationJob
       end
       card.save!
 
-      # create mcq options for MCQ cards (only text options for now)
-      if selected_blueprint.blueprint.answer_type == "mcq_answer"
-        data[:mcq_options].each { |text_content| McqOption.create!(text_content:, card:) }
+      # create answers (only text for mcq options for now)
+      if selected_blueprint.blueprint.mcq_answer?
+        data[:mcq_options].each do |text_content|
+          mcq_option = McqOption.create!(text_content:, card:)
+          McqAnswer.create!(model_answer: mcq_option, card:) if text_content == data[:model_answer]
+        end
+      elsif selected_blueprint.blueprint.text_answer?
+        TextAnswer.create!(model_answer: data[:model_answer], card:)
       end
     end
   end

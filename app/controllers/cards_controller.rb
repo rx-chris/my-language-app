@@ -12,6 +12,12 @@ class CardsController < ApplicationController
 
       card_props = { mode:, lesson: }
 
+      if @card.blueprint.mcq_answer?
+        card_props[:model_answer] = @card.mcq_answer.model_answer.text_content
+      elsif @card.blueprint.text_answer?
+        card_props[:model_answer] = @card.text_answer.model_answer
+      end
+
       case @card.blueprint.content_type.to_sym
       when :audio_content then card_props[:audio_url] = Cloudinary::Utils.cloudinary_url("#{ENV['CLOUDINARY_FOLDER']}/#{@card.audio_content.key}", resource_type: "video")
       when :image_content then card_props[:image_url] = Cloudinary::Utils.cloudinary_url("#{ENV['CLOUDINARY_FOLDER']}/#{@card.image_content.key}")

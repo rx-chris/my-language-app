@@ -62,7 +62,7 @@ class LessonsController < ApplicationController
   end
 
   def generate_params
-    params.permit(:language_id, :lesson_count, :learning_objective)
+    params.permit(:lesson, :language_id, :lesson_count, :learning_objective)
   end
 
   def batch_create_lessons_params

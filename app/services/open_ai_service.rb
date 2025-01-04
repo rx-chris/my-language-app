@@ -83,7 +83,7 @@ class OpenAiService
     card_details << "model_answer: Provide the correct answer based on the 'instruction' and '#{req[:content_type]}'#{in_language}"
     card_details << "pronunciation: Provide the pronunciation of the 'model_answer' only if it is in #{req[:language]} or else this should be 'null'"
 
-    if req[:answer_type] == "mcq"
+    if req[:answer_type] == "mcq_answer"
       card_details << "mcq_options: Provide a list of 4 answers to choose whereby 1 of the is the 'model_answer' and the rest are incorrect answers."
     end
 
@@ -110,9 +110,9 @@ class OpenAiService
       lesson_title: "Ordering Food",
       lesson_description: "Learn how to order food at a restaurant. Key phrases include 'Menu wo misete kudasai' (Please show me the menu), 'Kore wo kudasai' (I'll have this), and 'Oishii desu' (It's delicious). Explore common Japanese dishes and how to express dietary preferences.",
       card_count: 10,
-      instruction: "Translate the following phrase or sentence",
+      instruction: "Which of the following is the corrrect translation?",
       content_type: "text_content",
-      answer_type: "text_answer"
+      answer_type: "mcq_answer"
     }
   end
 

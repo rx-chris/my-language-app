@@ -31,6 +31,6 @@ class Lesson < ApplicationRecord
 
   def score
     correct = correct_cards
-    correct.empty? ? 0 : correct.length.to_f / completed_cards
+    correct.empty? ? 0 : correct.length.to_f / completed_cards.length
   end
 end

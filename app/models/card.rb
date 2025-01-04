@@ -16,4 +16,24 @@ class Card < ApplicationRecord
 
   # validations
   validates :lesson, :blueprint, presence: true
+
+  # methods
+  def correct?
+    answer.correct?
+  end
+
+  def answer!(user_answer)
+    answer.answer!(user_answer)
+    update!(correct: correct?)
+  end
+
+  def reset_answer!
+    answer.update!(user_answer: nil)
+  end
+
+  private
+
+  def answer
+    self.send(blueprint.answer_type)
+  end
 end

@@ -7,7 +7,8 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import AppBreadCrumb from '@/components/AppBreadCrumb.vue';
 import { BookmarkCheck, Bookmark } from 'lucide-vue-next';
 import getCsrfToken from '@/lib/getCsrfToken';
-import McqButton from './components/McqButton.vue';
+import McqAnswer from './components/McqAnswer.vue';
+import { cn } from '@/lib/utils';
 
 // ----------------------------------------------------------
 // Props
@@ -54,7 +55,7 @@ const breadCrumbProps = [
 const isAudioContent = () => card.blueprint.content_type === 'audio_content';
 const isImageContent = () => card.blueprint.content_type === 'image_content';
 
-// methods to check input type
+// methods to check answer
 const isMcqAnswer = () => card.blueprint.answer_type === 'mcq_answer';
 const isTextAnswer = () => card.blueprint.answer_type === 'text_answer';
 
@@ -63,10 +64,14 @@ const isLearningMode = () => card.mode === "learning";
 const isTestMode = () => card.mode === "test";
 
 const form = useForm({
-    user_answer: ""
+    user_answer: isTextAnswer() ? card.text_answer.user_answer : ''
 })
 
-// event handler
+// event handlers
+const reloadCardProp = (page: any) => {
+    router.visit(page.url, { only: ['cards'] })
+}
+
 const toggleBookmark = async () => {
     const response = await fetch(bookmark_card_url, {
         method: 'PATCH',
@@ -78,7 +83,11 @@ const toggleBookmark = async () => {
     });
 
     if (!response.ok) return;
-    card.bookmarked = !card.bookmarked
+    router.reload({ only: ['card'] })
+}
+
+const attemptCard = () => {
+    form.post(attempt_card_url, { onSuccess: reloadCardProp })
 }
 </script>
 <template>
@@ -99,7 +108,12 @@ const toggleBookmark = async () => {
                 <div v-else class="text-center font-semibold text-3xl">
                     {{ card.text_content }}
                 </div>
-                <p v-if="isLearningMode()" class="text-center mt-4 text-3xl">{{ card.model_answer }}</p>
+                <p v-if="isLearningMode()" class="text-center mt-4 text-3xl">
+                    {{ card.model_answer }}
+                </p>
+                <p v-else-if="isTestMode() && card.answered" class="text-center mt-4 text-3xl text-green-600">
+                    {{ card.model_answer }}
+                </p>
             </div>
             <button type="button" @click="toggleBookmark" class="absolute top-4 right-4 hover:scale-110">
                 <BookmarkCheck v-if="card.bookmarked" />
@@ -109,31 +123,32 @@ const toggleBookmark = async () => {
 
         <template v-if="isTestMode()">
             <p class="text-center my-3">{{ card.blueprint.instruction }}</p>
-            <form @submit.prevent="router.post(attempt_card_url, form.data())">
+            <form @submit.prevent="attemptCard">
                 <!-- Render inputs based on input type -->
                 <template v-if="isMcqAnswer()">
                     <div class="flex justify-center m-6">
                         <div class="grid grid-cols-4 gap-4">
                             <template v-for="mcqOption in card.mcq_options" :key="mcqOption.id">
-                                <McqButton v-model="form.user_answer" :id="mcqOption.id"
+                                <McqAnswer v-model="form.user_answer" :id="mcqOption.id"
                                     :user_answer_id="card.mcq_answer.user_answer_id"
                                     :model_answer_id="card.mcq_answer.model_answer_id">
                                     {{ mcqOption.text_content }}
-                                </McqButton>
+                                </McqAnswer>
                             </template>
                         </div>
                     </div>
                 </template>
                 <template v-else-if="isTextAnswer()">
                     <div class="my-3 mx-5">
-                        <Input placeholder="Type your answer here" v-model="form.user_answer" />
+                        <Input placeholder="Type your answer here" v-model="form.user_answer" :disabled="card.answered"
+                            :class="cn('text-center text-lg', card.correct ? 'bg-green-300' : card.correct === false ? 'bg-red-300' : '')" />
                     </div>
                 </template>
                 <!-- answer and next buttons -->
                 <div class="flex justify-center">
                     <div class="flex gap-3 items-center">
                         <Link :href="prev_card_url" :class="buttonVariants()">Previous</Link>
-                        <Button type="submit">Answer</Button>
+                        <Button v-if="!card.answered" type="submit">Answer</Button>
                         <Link :href="next_card_url" :class="buttonVariants()">Next</Link>
                     </div>
                 </div>

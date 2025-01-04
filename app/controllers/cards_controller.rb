@@ -10,7 +10,7 @@ class CardsController < ApplicationController
       next_card = @card.lesson.cards.order(:id).find_by("cards.id > ?", @card.id)
       prev_card = @card.lesson.cards.order(id: :desc).find_by("cards.id < ?", @card.id)
 
-      card_props = { mode:, lesson: }
+      card_props = { mode:, lesson:, answered: @card.answered? }
 
       if @card.blueprint.mcq_answer?
         card_props[:model_answer] = @card.mcq_answer.model_answer.text_content
@@ -25,8 +25,8 @@ class CardsController < ApplicationController
 
       render inertia: "Cards/Show", props: {
         card: @card.as_json(include: [ :blueprint, :mcq_options, :text_answer, { mcq_answer: { include: [ :user_answer, :model_answer ] } } ]).merge(card_props),
-        prev_card_url: prev_card ? card_path(prev_card, mode:) : lesson_path(@card.lesson),
-        next_card_url: next_card ? card_path(next_card, mode:) : lesson_path(@card.lesson),
+        prev_card_url: prev_card ? card_path(prev_card, mode:) : lesson_path(@card.lesson, mode:),
+        next_card_url: next_card ? card_path(next_card, mode:) : lesson_path(@card.lesson, mode:),
         bookmark_card_url: bookmark_card_path(@card),
         attempt_card_url: attempt_card_path(@card)
       }
@@ -47,7 +47,6 @@ class CardsController < ApplicationController
 
   def attempt
     user_answer = params[:user_answer]
-
     @card.answer!(user_answer)
 
     redirect_to card_path(@card, mode: Card::TEST)

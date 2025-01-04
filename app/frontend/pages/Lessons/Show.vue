@@ -14,10 +14,11 @@ import { ref } from 'vue';
 defineOptions({ layout: [Layout, Container] })
 
 interface Props {
-    lesson: any
+    lesson: any;
+    mode: string | null;
 }
 
-const { lesson } = defineProps<Props>()
+const { lesson, mode } = defineProps<Props>()
 
 const breadCrumbProps = [
     {
@@ -30,6 +31,8 @@ const breadCrumbProps = [
 ]
 
 const isLearningMode = ref(true)
+
+if (mode === "test") isLearningMode.value === false
 </script>
 
 <template>
@@ -56,12 +59,13 @@ const isLearningMode = ref(true)
             </CardContent>
         </Card>
 
-        <!-- Cards -->
+        <!-- Card header -->
         <div class="flex items-center gap-4 mb-2 mt-6">
             <h2 class="text-xl font-semibold grow">Cards:</h2>
             <Label for="mode">{{ isLearningMode ? 'Learning' : 'Quiz' }} Mode</Label>
             <Switch id="mode" v-model:checked="isLearningMode" />
         </div>
+        <!-- Cards -->
         <div class="flex flex-col gap-1.5 mt-3">
             <template v-for="card in lesson.cards" :key="card.id">
                 <Link :href="isLearningMode ? card.learning_url : card.test_url">

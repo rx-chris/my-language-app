@@ -6,7 +6,7 @@ class CardsController < ApplicationController
 
     if [ Card::TEST, Card::LEARNING ].include?(mode&.to_sym)
       curriculum = @card.lesson.curriculum.as_json.merge(url: curriculum_path(@card.lesson.curriculum))
-      lesson = @card.lesson.as_json.merge(url: lesson_path(@card.lesson), curriculum:)
+      lesson = @card.lesson.as_json.merge(url: lesson_path(@card.lesson, mode:), curriculum:)
       next_card = @card.lesson.cards.order(:id).find_by("cards.id > ?", @card.id)
       prev_card = @card.lesson.cards.order(id: :desc).find_by("cards.id < ?", @card.id)
 

@@ -2,17 +2,29 @@ class LessonsController < ApplicationController
   before_action :set_lesson, only: %i[show]
 
   def show
-    curriculum = @lesson.curriculum.as_json.merge(url: curriculum_path(@lesson.curriculum))
-    cards = @lesson.cards.order(:id).map do |card|
-        card.as_json(include: :blueprint).merge(
-          learning_url: card_path(card, mode: Card::LEARNING),
-          test_url: card_path(card, mode: Card::TEST)
-        )
-    end
+    mode = params[:mode]
 
-    render inertia: "Lessons/Show", props: {
-      lesson: @lesson.as_json(methods: [ :progress, :score ]).merge(curriculum:, cards:)
-    }
+    if [ Card::TEST, Card::LEARNING ].include?(mode&.to_sym)
+      curriculum = @lesson.curriculum.as_json.merge(url: curriculum_path(@lesson.curriculum))
+      cards = @lesson.cards.order(:id).map do |card|
+          card.as_json(include: :blueprint).merge(
+            learning_url: card_path(card, mode: Card::LEARNING),
+            test_url: card_path(card, mode: Card::TEST)
+          )
+      end
+
+      render inertia: "Lessons/Show", props: {
+        lesson: @lesson.as_json(methods: [ :progress, :score ]).merge(
+          curriculum:,
+          cards:,
+          learning_url: lesson_path(@lesson, Card::LEARNING),
+          test_url: lesson_path(@lesson, Card::TEST)
+        ),
+        mode:
+      }
+    else
+      redirect_to lesson_path(@lesson, mode: Card::LEARNING)
+    end
   end
 
   def generate

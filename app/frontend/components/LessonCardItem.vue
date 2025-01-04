@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { BookmarkCheck, CircleCheck, CircleX, LoaderCircle } from 'lucide-vue-next';
-import { computed } from 'vue';
+import { BookmarkCheck, Bookmark, CircleCheck, CircleX, LoaderCircle } from 'lucide-vue-next';
 import { Badge } from './ui/badge';
 
 interface Props {
@@ -8,17 +7,13 @@ interface Props {
 }
 
 const { card } = defineProps<Props>()
-
-const statusIcon = computed(() => {
-    if (card.correct === null) return LoaderCircle
-    return card.correct ? CircleCheck : CircleX
-})
 </script>
 <template>
     <div
         class="flex justify-between items-center p-3 border rounded-md gap-3 shadow-md bg-orange-100 hover:bg-orange-200">
-        <div class="w-10">
-            <BookmarkCheck />
+        <div class="flex justify-center w-10">
+            <BookmarkCheck v-if="card.bookmarked" />
+            <Bookmark v-else class="text-muted-foreground opacity-50" />
         </div>
         <div class="grow">
             {{ card.blueprint.instruction }}
@@ -26,8 +21,10 @@ const statusIcon = computed(() => {
         <Badge>
             {{ card.blueprint.name }}
         </Badge>
-        <div>
-            <component :is="statusIcon" />
+        <div class="flex justify-center w-10">
+            <LoaderCircle v-if="card.correct === null" class="animate-spin text-muted-foreground" />
+            <CircleCheck v-else-if="card.correct" class="text-green-600 animate-pulse" />
+            <CircleX v-else class="text-red-600 animate-pulse" />
         </div>
     </div>
 </template>

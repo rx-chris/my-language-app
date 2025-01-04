@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import Layout from '@/layouts/Layout.vue';
 import Container from '@/layouts/Container.vue';
-import { Link, useForm } from '@inertiajs/vue3';
+import { Link, router, useForm } from '@inertiajs/vue3';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Button, buttonVariants } from '@/components/ui/button'
 import AppBreadCrumb from '@/components/AppBreadCrumb.vue';
 import { BookmarkCheck, Bookmark } from 'lucide-vue-next';
 import getCsrfToken from '@/lib/getCsrfToken';
+import McqButton from './components/McqButton.vue';
 
 // ----------------------------------------------------------
 // Props
@@ -20,17 +20,18 @@ interface Props {
     prev_card_url: string;
     next_card_url: string;
     bookmark_card_url: string;
+    attempt_card_url: string
 }
 
 const {
     card,
     prev_card_url,
     next_card_url,
-    bookmark_card_url
+    bookmark_card_url,
+    attempt_card_url
 } = defineProps<Props>()
 
 console.log(card)
-console.log(next_card_url)
 
 // create breadcrumb
 const capitalize = (word: string) => word.charAt(0).toUpperCase() + word.slice(1);
@@ -108,25 +109,24 @@ const toggleBookmark = async () => {
 
         <template v-if="isTestMode()">
             <p class="text-center my-3">{{ card.blueprint.instruction }}</p>
-            <form>
+            <form @submit.prevent="router.post(attempt_card_url, form.data())">
                 <!-- Render inputs based on input type -->
                 <template v-if="isMcqAnswer()">
                     <div class="flex justify-center m-6">
                         <div class="grid grid-cols-4 gap-4">
-                            <div v-for="mcqOption in card.mcq_options" :key="mcqOption.id"
-                                class="border rounded-md hover:bg-slate-200">
-                                <input type="radio" :id="`mcq_option_${mcqOption.id}`" :value="mcqOption.id"
-                                    v-model="form.user_answer" class="hidden" />
-                                <Label :for="`mcq_option_${mcqOption.id}`" class="block w-full text-center p-3">
+                            <template v-for="mcqOption in card.mcq_options" :key="mcqOption.id">
+                                <McqButton v-model="form.user_answer" :id="mcqOption.id"
+                                    :user_answer_id="card.mcq_answer.user_answer_id"
+                                    :model_answer_id="card.mcq_answer.model_answer_id">
                                     {{ mcqOption.text_content }}
-                                </Label>
-                            </div>
+                                </McqButton>
+                            </template>
                         </div>
                     </div>
                 </template>
                 <template v-else-if="isTextAnswer()">
                     <div class="my-3 mx-5">
-                        <Input placeholder="Type your answer here" />
+                        <Input placeholder="Type your answer here" v-model="form.user_answer" />
                     </div>
                 </template>
                 <!-- answer and next buttons -->

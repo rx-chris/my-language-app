@@ -24,6 +24,10 @@ class Lesson < ApplicationRecord
     cards.where(correct: false)
   end
 
+  def bookmarked_cards
+    cards.where(bookmarked: true)
+  end
+
   # getter methods for aggregated card properties
   def progress
     cards.empty? ? 0 : completed_cards.length.to_f / cards.length

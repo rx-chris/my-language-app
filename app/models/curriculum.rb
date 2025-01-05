@@ -18,4 +18,12 @@ class Curriculum < ApplicationRecord
   def score
     lessons.empty? ? 0 : lessons.sum { |lesson| lesson.score }.to_f / lessons.length
   end
+
+  def bookmarked_lessons
+    lessons.reject { |lesson| lesson.cards.find_by(bookmarked: true).nil? }
+  end
+
+  def bookmarked_cards
+    cards.where(bookmarked: true)
+  end
 end

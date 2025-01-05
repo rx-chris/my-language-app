@@ -145,8 +145,8 @@ const attemptCard = () => {
                     </div>
                 </template>
                 <!-- answer and next buttons -->
-                <div class="flex justify-center">
-                    <div class="flex gap-3 items-center">
+                <div class="flex justify-center mt-4">
+                    <div :class="cn('grid gap-3', card.answered ? 'grid-cols-2' : 'grid-cols-3')">
                         <Link :href="prev_card_url" :class="buttonVariants()">Previous</Link>
                         <Button v-if="!card.answered" type="submit">Answer</Button>
                         <Link :href="next_card_url" :class="buttonVariants()">Next</Link>
@@ -156,9 +156,11 @@ const attemptCard = () => {
         </template>
         <template v-else-if="isLearningMode()">
             <!-- answer and next buttons -->
-            <div class="flex justify-center gap-3">
-                <Link :href="prev_card_url" :class="buttonVariants()">Previous</Link>
-                <Link :href="next_card_url" :class="buttonVariants()">Next</Link>
+            <div class="flex justify-center mt-4">
+                <div class="grid grid-cols-2 gap-3">
+                    <Link :href="prev_card_url" :class="buttonVariants()">Previous</Link>
+                    <Link :href="next_card_url" :class="buttonVariants()">Next</Link>
+                </div>
             </div>
         </template>
     </div>

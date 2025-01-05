@@ -9,5 +9,13 @@ class Curriculum < ApplicationRecord
 
   # validations
   validates :title, :purpose, :start_date, :end_date, presence: true
-  # validates :selected_card_blueprints, length: { minimum: 1, too_short: "need to have at least 1 selected card blueprint" }
+
+  # methods
+  def progress
+    lessons.empty? ? 0 : lessons.sum { |lesson| lesson.progress }.to_f / lessons.length
+  end
+
+  def score
+    lessons.empty? ? 0 : lessons.sum { |lesson| lesson.score }.to_f / lessons.length
+  end
 end

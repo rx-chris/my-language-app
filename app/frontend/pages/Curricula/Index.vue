@@ -27,20 +27,32 @@ const { curricula, new_curriculum_url } = defineProps<Props>()
       <template v-for="curriculum in curricula" :key="curriculum.id">
         <Link :href="curriculum.url" class="w-full">
         <Card class="w-full">
-          <CardContent class="flex justify-between p-6">
-            <CardHeader>
+          <CardContent class="flex items-center p-6 gap-3">
+            <CardHeader class="grow mb-auto">
               <CardTitle class="text-xl">{{ curriculum.title }}</CardTitle>
               <CardDescription>Number of lessons: {{ curriculum.lessons.length }}</CardDescription>
               <CardDescription>Purpose: {{ curriculum.purpose }}</CardDescription>
             </CardHeader>
-            <ProgressRing :value="0.7" size="10rem" :options="{
-              cutout: '60%',
-              backgroundColor: [
-                'rgb(255, 99, 132)',
-                'rgb(54, 162, 235)'
-              ],
-              borderWidth: 5,
-            }" />
+            <div>
+              <ProgressRing :value="curriculum.progress" size="7.5rem" :options="{
+                cutout: '60%',
+                backgroundColor: [
+                  'rgb(104, 222, 136)',
+                  'rgb(225, 225, 225)',
+                ],
+              }" />
+              <h4 class="text-center text-sm font-semibold mt-2">PROGRESS</h4>
+            </div>
+            <div>
+              <ProgressRing :value="curriculum.score" size="7.5rem" :options="{
+                cutout: '60%',
+                backgroundColor: [
+                  'rgb(250, 175, 35)',
+                  'rgb(225, 225, 225)',
+                ],
+              }" />
+              <h4 class="text-center text-sm font-semibold mt-2">SCORE</h4>
+            </div>
           </CardContent>
         </Card>
         </Link>

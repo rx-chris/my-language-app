@@ -29,9 +29,9 @@ const breadCrumbProps = [
         title: lesson.title,
     }
 ]
-const cardMode = ref(mode)
-
+const cardMode = ref(mode);
 const isLearningMode = ref(cardMode.value === "learning")
+const showProgress = ref(true);
 </script>
 
 <template>
@@ -40,7 +40,7 @@ const isLearningMode = ref(cardMode.value === "learning")
         <AppBreadCrumb :bread-crumb-props="breadCrumbProps" />
         <!-- Lesson Summary -->
         <Card>
-            <CardContent class="flex p-6 gap-12">
+            <CardContent class="flex p-6 gap-10">
                 <div class="flex flex-col justify-between grow">
                     <div>
                         <CardTitle class="text-4xl">{{ lesson.title }}</CardTitle>
@@ -52,9 +52,24 @@ const isLearningMode = ref(cardMode.value === "learning")
                         <Button>Next Lesson</Button>
                     </div>
                 </div>
-                <div>
-                    <ProgressRing :value="0.75" size="200px" />
-                </div>
+                <button @click="showProgress = !showProgress" variant="outline"
+                    class="bg-slate-50 hover:bg-slate-100 p-4 rounded-2xl">
+                    <ProgressRing v-if="showProgress" :value="lesson.progress" size="200px" :options="{
+                        backgroundColor: [
+                            'rgb(104, 222, 136)',
+                            'rgb(225, 225, 225)',
+                        ],
+                    }" />
+                    <ProgressRing v-else :value="lesson.score" size="200px" :options="{
+                        backgroundColor: [
+                            'rgb(250, 175, 35)',
+                            'rgb(225, 225, 225)',
+                        ],
+                    }" />
+                    <h4 class="mt-4 text-lg font-semibold">
+                        {{ showProgress ? 'PROGRESS' : 'SCORE' }}
+                    </h4>
+                </button>
             </CardContent>
         </Card>
 

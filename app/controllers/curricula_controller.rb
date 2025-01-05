@@ -7,7 +7,7 @@ class CurriculaController < ApplicationController
     render inertia: "Curricula/Index", props: {
       curricula: @curricula.map do |curriculum|
         curriculum
-          .as_json(include: :lessons)
+          .as_json(include: :lessons, methods: [ :progress, :score ])
           .merge(url: curriculum_path(curriculum))
       end,
       new_curriculum_url: new_curriculum_path

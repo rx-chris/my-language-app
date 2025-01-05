@@ -23,7 +23,7 @@ const headerMenuItems = [
     },
     {
         title: "Bookmarks",
-        url: "#",
+        url: "/bookmarks",
         icon: BookmarkCheck
     }
 ]

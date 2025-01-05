@@ -45,6 +45,31 @@ class CardsController < ApplicationController
     end
   end
 
+  def bookmarks
+    curricula = Curriculum.where(user: current_user).reject { |curriculum| curriculum.bookmarked_cards.empty? }
+
+    render inertia: "Cards/Bookmarks", props: {
+      curricula: curricula.map do |curriculum|
+        curriculum.as_json.merge(
+          lessons: curriculum.bookmarked_lessons.map do |lesson|
+            lesson.as_json.merge(
+              cards: lesson.bookmarked_cards.map do |card|
+                card.as_json(
+                  include: :blueprint,
+                  methods: :model_text_answer
+                ).merge(
+                  learning_url: card_path(card, Card::LEARNING)
+                )
+              end,
+              url: lesson_path(lesson)
+            )
+          end,
+          url: curriculum_path(curriculum)
+        )
+      end
+    }
+  end
+
   def attempt
     user_answer = params[:user_answer]
     @card.answer!(user_answer)

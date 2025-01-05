@@ -23,4 +23,5 @@ Rails.application.routes.draw do
     patch :bookmark, on: :member
     post :attempt, on: :member
   end
+  get "/bookmarks", to: "cards#bookmarks"
 end

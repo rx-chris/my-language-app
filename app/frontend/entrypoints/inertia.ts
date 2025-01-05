@@ -1,5 +1,5 @@
 import { createInertiaApp } from '@inertiajs/vue3'
-import { createApp, DefineComponent, h } from 'vue'
+import { createSSRApp, DefineComponent, h } from 'vue'
 
 createInertiaApp({
   // Set default page title
@@ -28,7 +28,7 @@ createInertiaApp({
   },
 
   setup({ el, App, props, plugin }) {
-    createApp({ render: () => h(App, props) })
+    createSSRApp({ render: () => h(App, props) })
       .use(plugin)
       .mount(el)
   },

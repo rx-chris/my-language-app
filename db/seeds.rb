@@ -67,14 +67,12 @@ curricula_data.each do |curriculum_data|
   start_date = Date.today
   end_date = start_date + curriculum_data[:lessons].length.days
 
-  curriculum_data => { title:, purpose:, context:, language: }
   lessons_data = curriculum_data[:lessons]
 
   curriculum = Curriculum.create!(
-    title:,
-    purpose:,
-    context:,
-    language: Language.find_by(name: language),
+    title: curriculum_data[:title],
+    purpose: curriculum_data[:purpose],
+    language: Language.find_by(name: curriculum_data[:language]),
     start_date:,
     end_date:,
     user:

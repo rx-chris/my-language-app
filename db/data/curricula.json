@@ -1,66 +1,13 @@
 [
   {
-    "title": "Introduction to Japanese",
-    "purpose": "To learn beginner Japanese",
-    "context": "nil",
-    "language": "Japanese",
-    "lessons": [
-      {
-        "order": 1,
-        "title": "Lesson 1: Introduction to Japanese Pronunciation",
-        "description": "This lesson covers the basics of Japanese pronunciation, including vowel sounds, consonants, and pitch accent. You will learn how to pronounce hiragana and basic greetings such as 'こんにちは' (Konnichiwa)."
-      },
-      {
-        "order": 2,
-        "title": "Lesson 2: Mastering Hiragana",
-        "description": "Learn the entire hiragana alphabet, focusing on stroke order and proper pronunciation. Practice writing and recognizing the characters. By the end of the lesson, you should be able to read simple words written in hiragana."
-      },
-      {
-        "order": 3,
-        "title": "Lesson 3: Introduction to Kanji",
-        "description": "This lesson introduces the basics of kanji, including the first 5 kanji characters. You'll learn how to read and write simple kanji such as '山' (yama – mountain) and '川' (kawa – river)."
-      },
-      {
-        "order": 4,
-        "title": "Lesson 4: Basic Sentence Structure (SOV)",
-        "description": "Learn the basic sentence structure of Japanese, which follows the Subject-Object-Verb (SOV) order. You will practice constructing simple sentences using 'は' (wa), 'が' (ga), and 'を' (wo) particles."
-      },
-      {
-        "order": 5,
-        "title": "Lesson 5: Vocabulary for Daily Life",
-        "description": "Expand your vocabulary with words commonly used in daily life. You will learn words for things like family members, food, and common objects, and practice using them in simple sentences."
-      },
-      {
-        "order": 6,
-        "title": "Lesson 6: Introducing Katakana",
-        "description": "Learn the katakana alphabet, which is used for foreign loanwords. You will practice writing and reading katakana characters while also learning a few commonly used katakana words such as 'コンピュータ' (konpyu-ta – computer)."
-      },
-      {
-        "order": 7,
-        "title": "Lesson 7: Verb Conjugation (Present and Negative Forms)",
-        "description": "This lesson focuses on conjugating Japanese verbs in the present tense and their negative forms. You will learn how to conjugate 'る' (ru) and 'う' (u) verbs and practice forming simple negative sentences."
-      },
-      {
-        "order": 8,
-        "title": "Lesson 8: Kanji Practice and Radicals",
-        "description": "Focus on understanding kanji radicals, the building blocks of kanji characters. You will learn how to break down kanji into components and practice writing 10 more kanji characters."
-      },
-      {
-        "order": 9,
-        "title": "Lesson 9: Introduction to Particles (に, で, と)",
-        "description": "Learn the usage of basic particles such as 'に' (ni), 'で' (de), and 'と' (to). These particles are used for indicating locations, time, and conjunctions in sentences. Practice constructing sentences using these particles."
-      },
-      {
-        "order": 10,
-        "title": "Lesson 10: Practice Conversation and Listening",
-        "description": "This lesson is focused on practical conversation. You will learn how to introduce yourself, ask for directions, and express simple requests. Practice listening and speaking with dialogues in everyday scenarios."
-      }
-    ]
-  },
-  {
     "title": "Learn Holiday Japanese",
     "purpose": "I will be going on holiday to Japan for 7 days I would like to learn common Japanese phrases that can help me communicate effectively with the locals.",
-    "context": "nil",
+    "language": "Japanese",
+    "lessons": []
+  },
+  {
+    "title": "Mt Fuji Expedition",
+    "purpose": "I am traveling to Japan on holiday for 5 days. I will be engaging in outdoor activities such as climbing Mt Fuji, bouldering etc. I would like to learn some common Japanese phrases that can help be on trip, especially phrases related mountain climbing, bouldering, food and transportation.",
     "language": "Japanese",
     "lessons": []
   }

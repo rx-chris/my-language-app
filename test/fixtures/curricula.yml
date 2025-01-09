@@ -6,7 +6,6 @@ one:
   start_date: 2024-12-24
   end_date: 2024-12-24
   language: one
-  context: MyText
   user: one
 
 two:
@@ -15,5 +14,4 @@ two:
   start_date: 2024-12-24
   end_date: 2024-12-24
   language: two
-  context: MyText
   user: two

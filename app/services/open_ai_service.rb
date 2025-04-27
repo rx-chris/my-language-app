@@ -13,7 +13,7 @@ class OpenAiService
     response = @client.chat(
       parameters: {
         model: "gpt-4o-mini",
-        messages: [ { role: "user", content: lessons_message_content(request) } ],
+        messages: [ { role: "user", content: generate_lessons_message(request) } ],
         temperature: 0.7,
         response_format: {
           type: "json_schema",
@@ -36,7 +36,7 @@ class OpenAiService
     }
   end
 
-  def lessons_message_content(request)
+  def generate_lessons_message(request)
     request => { language_id:, lesson_count:, learning_objective: }
     language = Language.find(language_id)
 
@@ -54,7 +54,7 @@ class OpenAiService
     response = @client.chat(
       parameters: {
         model: "gpt-4o-mini",
-        messages: [ { role: "user", content: cards_message_content(request) } ],
+        messages: [ { role: "user", content: generate_cards_message(request) } ],
         temperature: 0.7,
         response_format: {
           type: "json_schema",
@@ -65,12 +65,7 @@ class OpenAiService
     unprocessed ? response : JSON.parse(response.dig("choices", 0, "message", "content"), symbolize_names:)
   end
 
-  def cards_message_content(req)
-    contents = {
-      "text_content" => "text_content: Provide a phrase or sentence in English or #{req[:language]}.",
-      "audio_content" => "audio_content: Provide a phrase or sentence in #{req[:language]} that will represent an audio file.",
-      "image_content" => "image_content: Provide an image caption to be used for image generation. Be as descriptive as possible"
-    }
+  def generate_cards_message(req)
     in_language = req[:content_type] == "image_content" ? " The answer should be in #{req[:language]}." : ""
 
     message = "I am designing a #{req[:language]} lesson with the following title and description:\n"
@@ -79,7 +74,7 @@ class OpenAiService
     message += "Recommend me #{req[:card_count]} #{req[:language]} learning cards for the above lesson as a JSON array that includes the following details for each card:\n"
 
     card_details = [ "instruction: Card instructions that says \"#{req[:instruction]}\"" ]
-    card_details << contents[req[:content_type]]
+    card_details << card_content_message(req[:content_type], req[:language])
     card_details << "model_answer: Provide the correct answer based on the 'instruction' and '#{req[:content_type]}'#{in_language}"
     card_details << "pronunciation: Provide the pronunciation of the 'model_answer' only if it is in #{req[:language]} or else this should be 'null'"
 
@@ -173,5 +168,17 @@ class OpenAiService
     filepath = Rails.root.join("tmp", filename)
     File.binwrite(filepath, audio_file)
     filepath
+  end
+
+  private
+
+  # get message for generating card content based of content type
+  def card_content_message(content_type, language)
+    contents = {
+      "text_content" => "text_content: Provide a phrase or sentence in English or #{language}.",
+      "audio_content" => "audio_content: Provide a phrase or sentence in #{language} that will represent an audio file.",
+      "image_content" => "image_content: Provide an image caption to be used for image generation. Be as descriptive as possible"
+    }
+    contents[content_type]
   end
 end

@@ -36,7 +36,7 @@ class Card < ApplicationRecord
   end
 
   def model_text_answer
-    answer.model_text_answer
+    answer&.model_text_answer
   end
 
   private
